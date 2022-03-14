@@ -33,8 +33,8 @@ public class Encryptor
     public void fillBlock(String str)
     {
         int s = 0;
-        for(int r = 0;r<numRows;r++){
-            for(int c = 0;c<numCols;c++){
+        for(int r = 0;r< letterBlock.length;r++){
+            for(int c = 0;c< letterBlock[0].length;c++){
                 if(s<str.length()){
                     letterBlock[r][c] = str.substring(s,s+1);
                     s++;
@@ -56,13 +56,15 @@ public class Encryptor
     public String encryptBlock()
     {
        String end  = "";
-       for(int c = 0;c<numCols;c++){
-           for(int r = 0;r<numRows;r++){
+       for(int c = 0;c<letterBlock[0].length;c++){
+           for(int r = 0;r< letterBlock.length;r++){
                end += letterBlock[r][c];
            }
        }
        return end;
     }
+
+
 
     /** Encrypts a message.
      *
@@ -74,12 +76,13 @@ public class Encryptor
     {
        String end = "";
        int x = numCols*numRows;
-       while(numRows*numCols<message.length()){
+       while(x<message.length()){
                fillBlock(message.substring(0,x));
                end += encryptBlock();
                message = message.substring(x);
        }
-
+       fillBlock(message);
+       end += encryptBlock();
     return end;
     }
 
@@ -107,6 +110,29 @@ public class Encryptor
      */
     public String decryptMessage(String encryptedMessage)
     {
-        return "";
+        String end = "";
+        int count = 0;
+        String s = encryptedMessage;
+        String[][] d = new String[numRows][numCols];
+        for(int c = 0;c<numCols;c++){
+            for(int r = 0;r<numRows;r++) {
+                d[r][c] = s.substring(count, count + 1);
+                count++;
+            }
+        }
+        print2DArray(d);
+
+       return "";
+    }
+    public static void print2DArray(String[][] arr)
+    {
+        for (String[] row : arr)
+        {
+            for (String val : row)
+            {
+                System.out.print(val + " ");
+            }
+            System.out.println();
+        }
     }
 }
